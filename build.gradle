@@ -30,6 +30,10 @@ minecraft {
     replaceIn 'FurusatoCore.java'
 }
 
+runClient {
+    jvmArgs '-Dfml.coreMods.load=com.demonicrous.furusato.core.asm.FurusatoCorePlugin'
+}
+
 dependencies {
 }
 
@@ -63,7 +67,9 @@ jar {
             'Specification-Version': '1',
             'Implementation-Title': project.name,
             'Implementation-Version': project.version,
-            'Implementation-Vendor': mod_author
+            'Implementation-Vendor': mod_author,
+            'FMLCorePlugin': 'com.demonicrous.furusato.core.asm.FurusatoCorePlugin',
+            'FMLCorePluginContainsFMLMod': 'true'
         )
     }
 }
