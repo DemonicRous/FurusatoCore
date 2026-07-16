@@ -1,5 +1,6 @@
 package com.demonicrous.furusato.core.asm;
 
+import java.io.File;
 import java.util.Map;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 
@@ -27,7 +28,8 @@ public final class FurusatoCorePlugin implements IFMLLoadingPlugin {
 
     @Override
     public void injectData(Map<String, Object> data) {
-        // This transformer does not require runtime setup data.
+        Object gameDirectory = data.get("mcLocation");
+        SplashThemeInstaller.install(gameDirectory instanceof File ? (File) gameDirectory : null);
     }
 
     @Override
