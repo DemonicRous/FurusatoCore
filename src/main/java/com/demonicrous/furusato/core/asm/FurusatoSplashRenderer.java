@@ -25,11 +25,11 @@ public final class FurusatoSplashRenderer {
             displayedProgress = target;
         }
 
-        drawBox(0, 0, WIDTH, HEIGHT, 0xFF5F6964);
-        drawBox(1, 1, WIDTH - 2, HEIGHT - 2, 0xFFD8DDD8);
+        drawBox(0, 0, WIDTH, HEIGHT, 0xFFFFFFFF);
+        drawBox(2, 2, WIDTH - 4, HEIGHT - 4, 0xFFEF323D);
         int fillWidth = Math.max(0, Math.min(WIDTH - 2,
                 Math.round((WIDTH - 2) * displayedProgress)));
-        drawBox(1, 1, fillWidth, HEIGHT - 2, 0xFF71957F);
+        drawBox(2, 2, Math.max(0, fillWidth - 2), HEIGHT - 4, 0xFFFFFFFF);
     }
 
     private static void drawBox(int x, int y, int width, int height, int color) {

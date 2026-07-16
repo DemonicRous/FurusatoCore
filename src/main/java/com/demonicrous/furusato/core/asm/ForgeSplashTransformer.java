@@ -86,6 +86,12 @@ public final class ForgeSplashTransformer implements IClassTransformer {
             }
             if (instruction instanceof MethodInsnNode) {
                 MethodInsnNode call = (MethodInsnNode) instruction;
+                if ("<init>".equals(call.name)
+                        && "net/minecraftforge/fml/client/SplashProgress$Texture".equals(call.owner)
+                        && call.getPrevious() != null
+                        && call.getPrevious().getOpcode() == Opcodes.ICONST_0) {
+                    method.instructions.set(call.getPrevious(), new InsnNode(Opcodes.ICONST_1));
+                }
                 if (TARGET.replace('.', '/').equals(call.owner)
                         && "drawBar".equals(call.name)
                         && DRAW_BAR_DESC.equals(call.desc)) {

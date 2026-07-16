@@ -19,7 +19,7 @@ import org.apache.logging.log4j.Logger;
 /** Installs Furusato's early Forge splash resources before SplashProgress starts. */
 final class SplashThemeInstaller {
     private static final Logger LOGGER = LogManager.getLogger("Furusato Core/Splash");
-    private static final String THEME_VERSION = "2";
+    private static final String THEME_VERSION = "3";
     private static final String RESOURCE_PATH =
             "/assets/furusatocore/textures/gui/empty.png";
 
@@ -36,6 +36,10 @@ final class SplashThemeInstaller {
             File texture = new File(gameDirectory,
                     "resources/assets/furusatocore/textures/gui/empty.png");
             copyTexture(texture);
+            copyResource(
+                    "/assets/furusatocore/textures/gui/mojang.png",
+                    new File(gameDirectory, "resources/assets/minecraft/textures/gui/title/mojang.png")
+            );
             configureSplash(new File(gameDirectory, "config/splash.properties"));
         } catch (IOException error) {
             LOGGER.error("Could not install the Furusato splash theme", error);
@@ -43,14 +47,18 @@ final class SplashThemeInstaller {
     }
 
     private static void copyTexture(File target) throws IOException {
+        copyResource(RESOURCE_PATH, target);
+    }
+
+    private static void copyResource(String resourcePath, File target) throws IOException {
         File parent = target.getParentFile();
         if (!parent.isDirectory() && !parent.mkdirs()) {
             throw new IOException("Could not create splash resource directory: " + parent);
         }
 
-        try (InputStream input = SplashThemeInstaller.class.getResourceAsStream(RESOURCE_PATH)) {
+        try (InputStream input = SplashThemeInstaller.class.getResourceAsStream(resourcePath)) {
             if (input == null) {
-                throw new IOException("Missing bundled splash texture: " + RESOURCE_PATH);
+                throw new IOException("Missing bundled splash texture: " + resourcePath);
             }
             Files.copy(input, target.toPath(), StandardCopyOption.REPLACE_EXISTING);
         }
@@ -74,11 +82,11 @@ final class SplashThemeInstaller {
             properties.setProperty("rotate", "false");
             properties.setProperty("showMemory", "false");
             properties.setProperty("logoOffset", "0");
-            properties.setProperty("background", "0xE8E4DB");
-            properties.setProperty("font", "0x303633");
-            properties.setProperty("barBorder", "0x5F6964");
-            properties.setProperty("bar", "0x71957F");
-            properties.setProperty("barBackground", "0xD8DDD8");
+            properties.setProperty("background", "0xEF323D");
+            properties.setProperty("font", "0xFFFFFF");
+            properties.setProperty("barBorder", "0xFFFFFF");
+            properties.setProperty("bar", "0xFFFFFF");
+            properties.setProperty("barBackground", "0xEF323D");
             properties.setProperty("resourcePackPath", "resources");
             properties.setProperty("forgeTexture",
                     "furusatocore:textures/gui/empty.png");
