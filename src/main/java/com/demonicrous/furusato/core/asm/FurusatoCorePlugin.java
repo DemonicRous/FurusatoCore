@@ -13,7 +13,10 @@ import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 public final class FurusatoCorePlugin implements IFMLLoadingPlugin {
     @Override
     public String[] getASMTransformerClass() {
-        return new String[] { UnicodeGuiScaleTransformer.class.getName() };
+        return new String[] {
+                ForgeSplashTransformer.class.getName(),
+                UnicodeGuiScaleTransformer.class.getName()
+        };
     }
 
     @Override

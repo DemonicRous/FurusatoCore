@@ -19,9 +19,9 @@ import org.apache.logging.log4j.Logger;
 /** Installs Furusato's early Forge splash resources before SplashProgress starts. */
 final class SplashThemeInstaller {
     private static final Logger LOGGER = LogManager.getLogger("Furusato Core/Splash");
-    private static final String THEME_VERSION = "1";
+    private static final String THEME_VERSION = "2";
     private static final String RESOURCE_PATH =
-            "/assets/furusatocore/textures/gui/loading_animation.png";
+            "/assets/furusatocore/textures/gui/empty.png";
 
     private SplashThemeInstaller() {
     }
@@ -34,7 +34,7 @@ final class SplashThemeInstaller {
 
         try {
             File texture = new File(gameDirectory,
-                    "resources/assets/furusatocore/textures/gui/loading_animation.png");
+                    "resources/assets/furusatocore/textures/gui/empty.png");
             copyTexture(texture);
             configureSplash(new File(gameDirectory, "config/splash.properties"));
         } catch (IOException error) {
@@ -73,15 +73,15 @@ final class SplashThemeInstaller {
             putIfMissing(properties, "enabled", "true");
             properties.setProperty("rotate", "false");
             properties.setProperty("showMemory", "false");
-            properties.setProperty("logoOffset", "16");
-            properties.setProperty("background", "0x050816");
-            properties.setProperty("font", "0xE7E5E4");
-            properties.setProperty("barBorder", "0x78716C");
-            properties.setProperty("bar", "0xD9913D");
-            properties.setProperty("barBackground", "0x111827");
+            properties.setProperty("logoOffset", "0");
+            properties.setProperty("background", "0xE8E4DB");
+            properties.setProperty("font", "0x303633");
+            properties.setProperty("barBorder", "0x5F6964");
+            properties.setProperty("bar", "0x71957F");
+            properties.setProperty("barBackground", "0xD8DDD8");
             properties.setProperty("resourcePackPath", "resources");
             properties.setProperty("forgeTexture",
-                    "furusatocore:textures/gui/loading_animation.png");
+                    "furusatocore:textures/gui/empty.png");
             properties.setProperty("furusatoThemeVersion", THEME_VERSION);
         }
 
