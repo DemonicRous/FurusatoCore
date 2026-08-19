@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.4.1
+
+- Replaced the chat command interface with a dedicated status screen on F8.
+- Added Overview, Modules and Services tabs with state-aware colors.
+- Added a remappable FurusatoCore key binding and non-pausing screen behavior.
+- Added scrolling for longer module and service lists.
+- Isolated all client-only code behind Forge client/common proxies.
+- Removed `/furusato` command registration and its chat output.
+
 ## 0.4.0
 
 - Added typed service metadata with stable IDs, owner modules and thread policies.

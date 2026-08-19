@@ -4,16 +4,16 @@ import dev.demonicrous.furusato.api.FurusatoAPI;
 import dev.demonicrous.furusato.api.bootstrap.BootstrapReport;
 import dev.demonicrous.furusato.api.bootstrap.BootstrapStage;
 import dev.demonicrous.furusato.core.bootstrap.BootstrapTracker;
-import dev.demonicrous.furusato.core.command.FurusatoCommand;
 import dev.demonicrous.furusato.core.internal.FurusatoApiImpl;
 import dev.demonicrous.furusato.core.module.CoreRuntimeModule;
 import dev.demonicrous.furusato.core.module.ModuleBootstrapException;
+import dev.demonicrous.furusato.core.platform.CommonProxy;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import org.apache.logging.log4j.Logger;
 
 @Mod(
@@ -26,6 +26,12 @@ public final class FurusatoCore {
     public static final String MOD_ID = "furusatocore";
     public static final String NAME = "FurusatoCore";
     public static final String VERSION = "@VERSION@";
+
+    @SidedProxy(
+            clientSide = "dev.demonicrous.furusato.core.platform.ClientProxy",
+            serverSide = "dev.demonicrous.furusato.core.platform.CommonProxy"
+    )
+    public static CommonProxy proxy;
 
     private final BootstrapTracker bootstrapTracker;
     private final FurusatoApiImpl api;
@@ -57,6 +63,7 @@ public final class FurusatoCore {
         bootstrapTracker.begin(BootstrapStage.INIT);
         try {
             api.internalModules().loadAll();
+            proxy.initializeClientFeatures();
             logger.info("FurusatoCore initialization complete");
         } catch (ModuleBootstrapException failure) {
             api.failed();
@@ -104,8 +111,4 @@ public final class FurusatoCore {
                 service.threadPolicy(), service.consumers().size()));
     }
 
-    @Mod.EventHandler
-    public void serverStarting(FMLServerStartingEvent event) {
-        event.registerServerCommand(new FurusatoCommand());
-    }
 }
