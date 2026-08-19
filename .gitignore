@@ -1,0 +1,19 @@
+# Local references and research checkouts
+/ref/
+
+# Gradle / ForgeGradle
+/.gradle/
+/build/
+/run/
+
+# IDE
+/.idea/
+*.iml
+/.classpath
+/.project
+/.settings/
+
+# OS
+.DS_Store
+Thumbs.db
+
