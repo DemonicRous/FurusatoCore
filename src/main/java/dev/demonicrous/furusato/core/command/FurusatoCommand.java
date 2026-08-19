@@ -31,7 +31,9 @@ public final class FurusatoCommand extends CommandBase {
                 "furusatocore.command.info",
                 FurusatoAPI.get().version(),
                 FurusatoAPI.get().apiVersion(),
-                FurusatoAPI.get().state().name()));
+                FurusatoAPI.get().state().name(),
+                String.format(java.util.Locale.ROOT, "%.3f",
+                        FurusatoAPI.get().bootstrapReport().totalMillis())));
     }
 
     @Override

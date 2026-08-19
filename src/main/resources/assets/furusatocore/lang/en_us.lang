@@ -1,1 +1,1 @@
-furusatocore.command.info=FurusatoCore %s | API %s | State: %s
+furusatocore.command.info=FurusatoCore %s | API %s | State: %s | Bootstrap: %s ms
