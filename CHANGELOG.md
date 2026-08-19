@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.1
+
+- Added colored chat output for `/furusato info` and `/furusato modules`.
+- Module entries now use distinct colors for enabled, failed, disabled, loaded
+  and discovered states.
+
 ## 0.3.0
 
 - Added explicit module registration through `IModuleManager`.
