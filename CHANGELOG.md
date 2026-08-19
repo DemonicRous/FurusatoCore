@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.3.0
+
+- Added explicit module registration through `IModuleManager`.
+- Added immutable module metadata with required and optional dependencies.
+- Added deterministic dependency ordering and cycle detection.
+- Added module lifecycle states and immutable status snapshots.
+- Added failure isolation for non-critical modules and dependent-module disablement.
+- Added rollback for partially loaded modules and cleanup after critical failure.
+- Added bootstrap abort semantics for required Core modules.
+- Added reverse-order module shutdown support.
+- Added the mandatory built-in `core` runtime module.
+- Added `/furusato modules` and module startup logging.
+- Added unit tests for ordering, missing dependencies, optional dependencies,
+  cycles, duplicate IDs, lifecycle failures and shutdown order.
+
 ## 0.2.0
 
 - Added explicit `CoreState` transition validation.

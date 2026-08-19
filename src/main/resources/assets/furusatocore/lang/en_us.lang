@@ -1,1 +1,3 @@
 furusatocore.command.info=FurusatoCore %s | API %s | State: %s | Bootstrap: %s ms
+furusatocore.command.modules.header=Furusato modules: %s/%s enabled
+furusatocore.command.modules.entry=%s [%s] v%s: %s (%s)

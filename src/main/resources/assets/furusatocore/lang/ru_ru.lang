@@ -1,1 +1,3 @@
 furusatocore.command.info=FurusatoCore %s | API %s | Состояние: %s | Запуск: %s мс
+furusatocore.command.modules.header=Модули Furusato: %s/%s включено
+furusatocore.command.modules.entry=%s [%s] v%s: %s (%s)

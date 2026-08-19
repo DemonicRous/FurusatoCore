@@ -6,6 +6,8 @@ import dev.demonicrous.furusato.api.bootstrap.BootstrapStage;
 import dev.demonicrous.furusato.core.bootstrap.BootstrapTracker;
 import dev.demonicrous.furusato.core.command.FurusatoCommand;
 import dev.demonicrous.furusato.core.internal.FurusatoApiImpl;
+import dev.demonicrous.furusato.core.module.CoreRuntimeModule;
+import dev.demonicrous.furusato.core.module.ModuleBootstrapException;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
@@ -34,6 +36,7 @@ public final class FurusatoCore {
         bootstrapTracker.begin(BootstrapStage.CONSTRUCT);
         api = new FurusatoApiImpl(VERSION, bootstrapTracker);
         api.starting();
+        api.internalModules().register(new CoreRuntimeModule());
         bootstrapTracker.end(BootstrapStage.CONSTRUCT);
     }
 
@@ -53,7 +56,12 @@ public final class FurusatoCore {
     public void init(FMLInitializationEvent event) {
         bootstrapTracker.begin(BootstrapStage.INIT);
         try {
+            api.internalModules().loadAll();
             logger.info("FurusatoCore initialization complete");
+        } catch (ModuleBootstrapException failure) {
+            api.failed();
+            logger.error("Required FurusatoCore module failed during bootstrap", failure);
+            throw failure;
         } finally {
             bootstrapTracker.end(BootstrapStage.INIT);
         }
@@ -86,6 +94,10 @@ public final class FurusatoCore {
                                 report.stageNanos(stage).getAsLong() / 1_000_000.0D));
             }
         }
+        api.modules().containers().forEach(module -> logger.info(
+                "Module {} {}: {} ({})",
+                module.metadata().id(), module.metadata().version(),
+                module.state(), module.statusDetail()));
     }
 
     @Mod.EventHandler

@@ -4,14 +4,17 @@ import dev.demonicrous.furusato.api.CoreState;
 import dev.demonicrous.furusato.api.FurusatoAPI;
 import dev.demonicrous.furusato.api.IFurusatoAPI;
 import dev.demonicrous.furusato.api.bootstrap.BootstrapReport;
+import dev.demonicrous.furusato.api.module.IModuleManager;
 import dev.demonicrous.furusato.api.service.IServiceRegistry;
 import dev.demonicrous.furusato.core.bootstrap.BootstrapTracker;
 import dev.demonicrous.furusato.core.internal.service.DefaultServiceRegistry;
+import dev.demonicrous.furusato.core.module.ModuleManager;
 
 public final class FurusatoApiImpl implements IFurusatoAPI {
     private final String version;
     private final BootstrapTracker bootstrapTracker;
     private final DefaultServiceRegistry services = new DefaultServiceRegistry();
+    private final ModuleManager modules = new ModuleManager(services);
     private volatile CoreState state = CoreState.NEW;
 
     public FurusatoApiImpl(String version, BootstrapTracker bootstrapTracker) {
@@ -40,6 +43,11 @@ public final class FurusatoApiImpl implements IFurusatoAPI {
     }
 
     @Override
+    public IModuleManager modules() {
+        return modules;
+    }
+
+    @Override
     public IServiceRegistry services() {
         return services;
     }
@@ -51,6 +59,16 @@ public final class FurusatoApiImpl implements IFurusatoAPI {
     public void available() {
         services.freeze();
         transition(CoreState.STARTING, CoreState.AVAILABLE);
+    }
+
+    public void failed() {
+        synchronized (this) {
+            state = CoreState.FAILED;
+        }
+    }
+
+    public ModuleManager internalModules() {
+        return modules;
     }
 
     private synchronized void transition(CoreState expected, CoreState next) {
