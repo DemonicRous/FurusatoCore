@@ -2,6 +2,8 @@ package dev.demonicrous.furusato.core.command;
 
 import dev.demonicrous.furusato.api.FurusatoAPI;
 import dev.demonicrous.furusato.api.module.ModuleContainer;
+import dev.demonicrous.furusato.api.service.ServiceSnapshot;
+import dev.demonicrous.furusato.api.service.ServiceStatus;
 import java.util.Collections;
 import java.util.List;
 import net.minecraft.command.CommandBase;
@@ -20,7 +22,7 @@ public final class FurusatoCommand extends CommandBase {
 
     @Override
     public String getUsage(ICommandSender sender) {
-        return "/furusato <info|modules>";
+        return "/furusato <info|modules|services>";
     }
 
     @Override
@@ -34,14 +36,36 @@ public final class FurusatoCommand extends CommandBase {
             showModules(sender);
             return;
         }
+        if (args.length > 0 && "services".equalsIgnoreCase(args[0])) {
+            showServices(sender);
+            return;
+        }
         sender.sendMessage(colored(new TextComponentTranslation(
                 "furusatocore.command.info",
                 FurusatoAPI.get().version(),
                 FurusatoAPI.get().apiVersion(),
                 FurusatoAPI.get().state().name(),
                 String.format(java.util.Locale.ROOT, "%.3f",
-                        FurusatoAPI.get().bootstrapReport().totalMillis())),
+                        FurusatoAPI.get().bootstrapReport().totalMillis()),
+                FurusatoAPI.get().services().size()),
                 TextFormatting.AQUA));
+    }
+
+    private void showServices(ICommandSender sender) {
+        sender.sendMessage(colored(new TextComponentTranslation(
+                "furusatocore.command.services.header",
+                FurusatoAPI.get().services().size()), TextFormatting.GOLD));
+        for (ServiceSnapshot service : FurusatoAPI.get().services().snapshots()) {
+            sender.sendMessage(colored(new TextComponentTranslation(
+                    "furusatocore.command.services.entry",
+                    service.id(),
+                    service.ownerModuleId(),
+                    service.threadPolicy().name(),
+                    service.status().name(),
+                    service.consumers().size()),
+                    service.status() == ServiceStatus.AVAILABLE
+                            ? TextFormatting.GREEN : TextFormatting.YELLOW));
+        }
     }
 
     private void showModules(ICommandSender sender) {
@@ -90,7 +114,8 @@ public final class FurusatoCommand extends CommandBase {
     @Override
     public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender,
             String[] args, BlockPos targetPos) {
-        return args.length == 1 ? getListOfStringsMatchingLastWord(args, "info", "modules")
+        return args.length == 1
+                ? getListOfStringsMatchingLastWord(args, "info", "modules", "services")
                 : Collections.<String>emptyList();
     }
 }

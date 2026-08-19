@@ -98,6 +98,10 @@ public final class FurusatoCore {
                 "Module {} {}: {} ({})",
                 module.metadata().id(), module.metadata().version(),
                 module.state(), module.statusDetail()));
+        api.services().snapshots().forEach(service -> logger.info(
+                "Service {}: {} owner={} policy={} consumers={}",
+                service.id(), service.status(), service.ownerModuleId(),
+                service.threadPolicy(), service.consumers().size()));
     }
 
     @Mod.EventHandler

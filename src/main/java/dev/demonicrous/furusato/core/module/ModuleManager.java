@@ -7,6 +7,7 @@ import dev.demonicrous.furusato.api.module.ModuleContext;
 import dev.demonicrous.furusato.api.module.ModuleMetadata;
 import dev.demonicrous.furusato.api.module.ModuleState;
 import dev.demonicrous.furusato.api.service.IServiceRegistry;
+import dev.demonicrous.furusato.core.internal.service.OwnedServiceRegistry;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -91,6 +92,7 @@ public final class ModuleManager implements IModuleManager {
                 if (lifecycleStarted) {
                     rollback(record, failure);
                 }
+                removeOwnedServices(record);
                 record.fail("module lifecycle failed: " + failure.getClass().getSimpleName(),
                         failure);
                 failIfCritical(record);
@@ -120,6 +122,12 @@ public final class ModuleManager implements IModuleManager {
             record.module.onDisable();
         } catch (Throwable rollbackFailure) {
             originalFailure.addSuppressed(rollbackFailure);
+        }
+    }
+
+    private void removeOwnedServices(ModuleRecord record) {
+        if (services instanceof OwnedServiceRegistry) {
+            ((OwnedServiceRegistry) services).removeOwnedBy(record.metadata().id());
         }
     }
 

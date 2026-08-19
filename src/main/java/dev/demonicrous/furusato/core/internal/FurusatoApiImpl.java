@@ -6,6 +6,8 @@ import dev.demonicrous.furusato.api.IFurusatoAPI;
 import dev.demonicrous.furusato.api.bootstrap.BootstrapReport;
 import dev.demonicrous.furusato.api.module.IModuleManager;
 import dev.demonicrous.furusato.api.service.IServiceRegistry;
+import dev.demonicrous.furusato.api.service.ServiceMetadata;
+import dev.demonicrous.furusato.api.service.ServiceThreadPolicy;
 import dev.demonicrous.furusato.core.bootstrap.BootstrapTracker;
 import dev.demonicrous.furusato.core.internal.service.DefaultServiceRegistry;
 import dev.demonicrous.furusato.core.module.ModuleManager;
@@ -20,6 +22,10 @@ public final class FurusatoApiImpl implements IFurusatoAPI {
     public FurusatoApiImpl(String version, BootstrapTracker bootstrapTracker) {
         this.version = version;
         this.bootstrapTracker = bootstrapTracker;
+        services.register(ServiceMetadata.builder("core.modules", IModuleManager.class)
+                .ownedBy("core")
+                .threadPolicy(ServiceThreadPolicy.THREAD_SAFE)
+                .build(), modules);
     }
 
     @Override

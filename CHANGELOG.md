@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.4.0
+
+- Added typed service metadata with stable IDs, owner modules and thread policies.
+- Added immutable, deterministically ordered service snapshots.
+- Added `require(contract, consumerModuleId)` with consumer tracking.
+- Added typed errors for missing, duplicate, invalid and late registrations.
+- Added automatic cleanup of services owned by a module that fails to load.
+- Preserved the original `register`, `get` and `find` API.
+- Registered Module Manager as the first built-in Core service.
+- Added service count to `/furusato info`.
+- Added colored `/furusato services` output.
+
 ## 0.3.1
 
 - Added colored chat output for `/furusato info` and `/furusato modules`.

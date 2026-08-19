@@ -1,3 +1,5 @@
-furusatocore.command.info=FurusatoCore %s | API %s | State: %s | Bootstrap: %s ms
+furusatocore.command.info=FurusatoCore %s | API %s | State: %s | Bootstrap: %s ms | Services: %s
 furusatocore.command.modules.header=Furusato modules: %s/%s enabled
 furusatocore.command.modules.entry=%s [%s] v%s: %s (%s)
+furusatocore.command.services.header=Furusato services: %s
+furusatocore.command.services.entry=%s | owner: %s | policy: %s | status: %s | consumers: %s

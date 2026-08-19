@@ -1,6 +1,7 @@
 package dev.demonicrous.furusato.core.module;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import dev.demonicrous.furusato.api.module.IFurusatoModule;
@@ -8,6 +9,8 @@ import dev.demonicrous.furusato.api.module.ModuleContainer;
 import dev.demonicrous.furusato.api.module.ModuleContext;
 import dev.demonicrous.furusato.api.module.ModuleMetadata;
 import dev.demonicrous.furusato.api.module.ModuleState;
+import dev.demonicrous.furusato.api.service.ServiceMetadata;
+import dev.demonicrous.furusato.api.service.ServiceThreadPolicy;
 import dev.demonicrous.furusato.core.internal.service.DefaultServiceRegistry;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -164,6 +167,43 @@ public final class ModuleManagerTest {
     }
 
     @Test
+    public void removesServicesOwnedByFailedModule() {
+        final DefaultServiceRegistry services = new DefaultServiceRegistry();
+        ModuleManager manager = new ModuleManager(services);
+        final ModuleMetadata metadata = metadata("broken").build();
+        manager.register(new IFurusatoModule() {
+            @Override
+            public ModuleMetadata metadata() {
+                return metadata;
+            }
+
+            @Override
+            public void onLoad(ModuleContext context) {
+                context.services().register(ServiceMetadata
+                        .builder("broken.service", TestService.class)
+                        .ownedBy("broken")
+                        .threadPolicy(ServiceThreadPolicy.THREAD_SAFE)
+                        .build(), new TestService() {
+                        });
+                throw new IllegalStateException("expected");
+            }
+
+            @Override
+            public void onEnable() {
+            }
+
+            @Override
+            public void onDisable() {
+            }
+        });
+
+        manager.loadAll();
+
+        assertFalse(services.find(TestService.class).isPresent());
+        assertEquals(0, services.size());
+    }
+
+    @Test
     public void shutsDownInReverseLoadOrder() {
         List<String> events = new ArrayList<String>();
         ModuleManager manager = manager();
@@ -236,5 +276,8 @@ public final class ModuleManagerTest {
 
     private void assertState(ModuleManager manager, String id, ModuleState state) {
         assertEquals(state, manager.find(id).get().state());
+    }
+
+    private interface TestService {
     }
 }

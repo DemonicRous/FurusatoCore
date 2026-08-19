@@ -1,3 +1,5 @@
-furusatocore.command.info=FurusatoCore %s | API %s | Состояние: %s | Запуск: %s мс
+furusatocore.command.info=FurusatoCore %s | API %s | Состояние: %s | Запуск: %s мс | Сервисы: %s
 furusatocore.command.modules.header=Модули Furusato: %s/%s включено
 furusatocore.command.modules.entry=%s [%s] v%s: %s (%s)
+furusatocore.command.services.header=Сервисы Furusato: %s
+furusatocore.command.services.entry=%s | владелец: %s | политика: %s | статус: %s | потребители: %s
